@@ -23,6 +23,12 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install NDK and CMake
+        run: sdkmanager "ndk;26.1.10909125" "cmake;3.22.1"
+
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug
 

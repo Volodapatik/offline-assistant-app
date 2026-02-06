@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#0B0F1A</color>
+    <color name="surface_dark">#131A2A</color>
+    <color name="surface_darker">#0F1524</color>
+    <color name="neon_cyan">#27F3FF</color>
+    <color name="neon_purple">#B45CFF</color>
+    <color name="text_primary">#E6F1FF</color>
+    <color name="text_secondary">#B4C4E0</color>
+    <color name="hint_text">#7F93B6</color>
+    <color name="icon_bg">#0F1322</color>
+    <color name="ic_launcher_background">#0F1322</color>
+</resources>

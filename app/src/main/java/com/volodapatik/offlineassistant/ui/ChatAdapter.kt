@@ -1,8 +1,10 @@
 package com.volodapatik.offlineassistant.ui
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.volodapatik.offlineassistant.R
@@ -31,12 +33,19 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     override fun getItemCount(): Int = items.size
 
     class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val messageRow: LinearLayout = itemView.findViewById(R.id.messageRow)
+        private val bubbleContainer: LinearLayout = itemView.findViewById(R.id.bubbleContainer)
         private val roleText: TextView = itemView.findViewById(R.id.roleText)
         private val messageText: TextView = itemView.findViewById(R.id.messageText)
 
         fun bind(message: ChatMessage) {
-            roleText.text = if (message.role == Role.USER) "You" else "Assistant"
+            val isUser = message.role == Role.USER
+            roleText.text = if (isUser) "You" else "Assistant"
             messageText.text = message.text
+            bubbleContainer.setBackgroundResource(
+                if (isUser) R.drawable.bubble_user else R.drawable.bubble_assistant
+            )
+            messageRow.gravity = if (isUser) Gravity.END else Gravity.START
         }
     }
 }

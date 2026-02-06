@@ -13,20 +13,32 @@ Offline Assistant is a minimal single-activity Android app for local text-based 
 - `app/src/main/java/com/volodapatik/offlineassistant/ui/ChatAdapter.kt` - RecyclerView adapter for chat messages.
 - `app/src/main/java/com/volodapatik/offlineassistant/model/ChatMessage.kt` - Message model and role enum.
 - `app/src/main/java/com/volodapatik/offlineassistant/engine/AssistantEngine.kt` - Assistant engine contract and structured response model.
-- `app/src/main/java/com/volodapatik/offlineassistant/engine/SimpleLocalEngine.kt` - Placeholder local assistant logic.
+- `app/src/main/java/com/volodapatik/offlineassistant/engine/EngineProvider.kt` - Runtime engine selection.
+- `app/src/main/java/com/volodapatik/offlineassistant/engine/LlamaEngine.kt` - JNI-backed local LLM engine (loads a GGUF asset).
+- `app/src/main/java/com/volodapatik/offlineassistant/engine/SimpleLocalEngine.kt` - Local fallback engine.
 
 ## Build
 ### Local
-1. Install Android SDK and Gradle.
+1. Install Android SDK, NDK (26.1.10909125), and CMake (3.22.1).
 2. Run:
    ```bash
-   gradle :app:assembleDebug
+   ./gradlew :app:assembleDebug
    ```
 
 ### GitHub Actions
 Workflow file: `.github/workflows/android.yml`
 
 It builds the debug APK on each push and pull request to `main`.
+
+## Offline model setup
+- The app expects a GGUF file at `app/src/main/assets/model.gguf`.
+- Replace the placeholder with a real model file (same filename) to enable the JNI-backed engine.
+- Keep the model small enough for mobile memory limits.
+
+## Engine selection
+- `EngineProvider` checks for a real model asset and whether the JNI library loads.
+- If both are available, it uses `LlamaEngine`.
+- Otherwise it falls back to `SimpleLocalEngine` and tells the user: `Offline model not installed. Using local fallback engine.`
 
 ## Notes
 - No internet APIs are used.

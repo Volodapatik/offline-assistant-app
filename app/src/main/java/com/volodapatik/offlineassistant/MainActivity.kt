@@ -1,19 +1,21 @@
 package com.volodapatik.offlineassistant
 
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.volodapatik.offlineassistant.engine.AssistantEngine
-import com.volodapatik.offlineassistant.engine.SimpleLocalEngine
+import com.volodapatik.offlineassistant.engine.EngineProvider
 import com.volodapatik.offlineassistant.model.ChatMessage
 import com.volodapatik.offlineassistant.model.Role
 import com.volodapatik.offlineassistant.ui.ChatAdapter
 
 class MainActivity : AppCompatActivity() {
-    private val engine: AssistantEngine = SimpleLocalEngine()
+    private lateinit var engine: AssistantEngine
     private val messages = mutableListOf<ChatMessage>()
     private lateinit var adapter: ChatAdapter
 
@@ -25,13 +27,14 @@ class MainActivity : AppCompatActivity() {
         val inputField: EditText = findViewById(R.id.inputField)
         val sendButton: Button = findViewById(R.id.sendButton)
 
+        engine = EngineProvider.create(this)
         adapter = ChatAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        sendButton.setOnClickListener {
+        val sendAction = sendAction@{
             val input = inputField.text.toString().trim()
-            if (input.isEmpty()) return@setOnClickListener
+            if (input.isEmpty()) return@sendAction
 
             appendMessage(ChatMessage(role = Role.USER, text = input), recyclerView)
 
@@ -41,11 +44,23 @@ class MainActivity : AppCompatActivity() {
 
             inputField.text.clear()
         }
+
+        sendButton.setOnClickListener { sendAction() }
+        inputField.setOnEditorActionListener { _, actionId, event ->
+            val imeSend = actionId == EditorInfo.IME_ACTION_SEND
+            val enterKey = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+            if (imeSend || enterKey) {
+                sendAction()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun appendMessage(message: ChatMessage, recyclerView: RecyclerView) {
         messages.add(message)
         adapter.submitMessages(messages)
-        recyclerView.scrollToPosition(messages.lastIndex)
+        recyclerView.post { recyclerView.scrollToPosition(messages.lastIndex) }
     }
 }

@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messageRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="@android:color/darker_gray"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:layout_marginBottom="12dp"
+    android:gravity="start"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/roleText"
+    <LinearLayout
+        android:id="@+id/bubbleContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:background="@drawable/bubble_assistant"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-    <TextView
-        android:id="@+id/messageText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/roleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </LinearLayout>
