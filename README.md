@@ -32,9 +32,10 @@ Workflow file: `.github/workflows/android.yml`
 It builds the debug APK on each push and pull request to `main`.
 
 ## Offline model setup
-- The app expects a GGUF file at `app/src/main/assets/model.gguf`.
-- Do not commit this file to git or push it to GitHub.
-- Keep the model small enough for mobile memory limits.
+- The app does not ship a model.
+- Transfer a GGUF file to your device (USB/OTG/Bluetooth) into Downloads.
+- Open the app, select the model when prompted, and it will copy into app storage.
+- After import, the app works fully offline.
 
 ## Engine selection
 - `EngineProvider` checks for a real model asset and whether the JNI library loads.

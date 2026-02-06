@@ -9,12 +9,16 @@ class LlamaEngine(private val context: Context) : AssistantEngine {
     private val ready: Boolean
 
     init {
-        val modelFile = ensureModelFile()
-        ready = try {
-            LlamaNative.init(modelFile.absolutePath, EngineConfig.CONTEXT_SIZE, EngineConfig.THREADS)
-        } catch (e: UnsatisfiedLinkError) {
-            false
-        } catch (e: Exception) {
+        val modelFile = getLocalModelFile(context)
+        ready = if (modelFile.exists()) {
+            try {
+                LlamaNative.init(modelFile.absolutePath, EngineConfig.CONTEXT_SIZE, EngineConfig.THREADS)
+            } catch (e: UnsatisfiedLinkError) {
+                false
+            } catch (e: Exception) {
+                false
+            }
+        } else {
             false
         }
     }
@@ -50,23 +54,15 @@ class LlamaEngine(private val context: Context) : AssistantEngine {
         }
     }
 
-    private fun ensureModelFile(): File {
-        val modelDir = File(context.filesDir, "models")
-        if (!modelDir.exists()) {
-            modelDir.mkdirs()
-        }
-        val modelFile = File(modelDir, EngineConfig.MODEL_ASSET)
-        if (!modelFile.exists()) {
-            context.assets.open(EngineConfig.MODEL_ASSET).use { input ->
-                modelFile.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-        }
-        return modelFile
-    }
-
     companion object {
+        fun getLocalModelFile(context: Context): File {
+            val modelDir = File(context.filesDir, "models")
+            if (!modelDir.exists()) {
+                modelDir.mkdirs()
+            }
+            return File(modelDir, EngineConfig.MODEL_ASSET)
+        }
+
         fun isNativeAvailable(): Boolean {
             return try {
                 System.loadLibrary("llama_jni")
