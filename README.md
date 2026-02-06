@@ -20,7 +20,8 @@ Offline Assistant is a minimal single-activity Android app for local text-based 
 ## Build
 ### Local
 1. Install Android SDK, NDK (26.1.10909125), and CMake (3.22.1).
-2. Run:
+2. Place your GGUF model at `app/src/main/assets/model.gguf` locally.
+3. Run:
    ```bash
    ./gradlew :app:assembleDebug
    ```
@@ -32,7 +33,7 @@ It builds the debug APK on each push and pull request to `main`.
 
 ## Offline model setup
 - The app expects a GGUF file at `app/src/main/assets/model.gguf`.
-- Replace the placeholder with a real model file (same filename) to enable the JNI-backed engine.
+- Do not commit this file to git or push it to GitHub.
 - Keep the model small enough for mobile memory limits.
 
 ## Engine selection

@@ -2,3 +2,4 @@
 **/build/
 local.properties
 *.log
+app/src/main/assets/model.gguf

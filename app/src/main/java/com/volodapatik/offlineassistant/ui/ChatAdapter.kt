@@ -20,6 +20,12 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun updateMessage(index: Int, message: ChatMessage) {
+        if (index !in items.indices) return
+        items[index] = message
+        notifyItemChanged(index)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_message, parent, false)

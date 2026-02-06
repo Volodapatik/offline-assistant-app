@@ -23,8 +23,7 @@ Java_com_volodapatik_offlineassistant_engine_LlamaNative_generate(
         jint maxTokens) {
     (void)maxTokens;
     const char *promptChars = env->GetStringUTFChars(prompt, nullptr);
-    std::string reply = "Stub LLM runtime active. Prompt received: ";
-    reply += promptChars ? promptChars : "";
+    std::string reply = "Native LLM stub compiled. Replace JNI implementation with real llama.cpp for inference.";
     env->ReleaseStringUTFChars(prompt, promptChars);
     return env->NewStringUTF(reply.c_str());
 }

@@ -43,6 +43,7 @@ class LlamaEngine(private val context: Context) : AssistantEngine {
             if (contextLines.isNotBlank()) {
                 appendLine(contextLines)
             }
+            appendLine("System: Keep responses short, helpful, and focused on coding.")
             append("User: ")
             appendLine(input)
             append("Assistant: ")
