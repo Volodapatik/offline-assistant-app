@@ -118,9 +118,22 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
+            <Button
+                android:id="@+id/diagnosticsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/input_bg"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:text="Diagnostics"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
             <ProgressBar
                 android:id="@+id/modelProgress"
-                android:layout_width="wrap_content"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:visibility="gone" />

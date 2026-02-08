@@ -4,11 +4,12 @@ import android.content.Context
 
 data class EngineSelection(
     val engine: AssistantEngine,
-    val statusLabel: String,
+    val statusLabel: String
 )
 
 object EngineProvider {
-    private const val MIN_MODEL_BYTES = 100L * 1024L * 1024L
+    // must be accessible from UI for validation / diagnostics
+    const val MIN_MODEL_BYTES = 100L * 1024L * 1024L
 
     fun create(context: Context): EngineSelection {
         val modelReady = hasLocalModel(context)
@@ -16,12 +17,12 @@ object EngineProvider {
         return if (modelReady && nativeReady) {
             EngineSelection(
                 engine = LlamaEngine(context),
-                statusLabel = "LLM: Ready",
+                statusLabel = "LLM: Ready"
             )
         } else {
             EngineSelection(
                 engine = SimpleLocalEngine(),
-                statusLabel = "LLM: Not found (fallback)",
+                statusLabel = "LLM: Not found (fallback)"
             )
         }
     }

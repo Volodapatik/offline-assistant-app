@@ -20,7 +20,9 @@ Offline Assistant is a minimal single-activity Android app for local text-based 
 ## Build
 ### Local
 1. Install Android SDK, NDK (26.1.10909125), and CMake (3.22.1).
-2. Place your GGUF model at `app/src/main/assets/model.gguf` locally.
+2. Provide llama.cpp sources:
+   - Preferred: add llama.cpp as a submodule in `app/src/main/cpp/llama`.
+   - Alternatively: let CMake fetch it during configure (requires network access during build). You can pin a version with `-DLLAMA_FETCH_TAG=<tag>` in CMake args.
 3. Run:
    ```bash
    ./gradlew :app:assembleDebug
@@ -34,13 +36,17 @@ It builds the debug APK on each push and pull request to `main`.
 ## Offline model setup
 - The app does not ship a model.
 - Transfer a GGUF file to your device (USB/OTG/Bluetooth) into Downloads.
-- Open the app, select the model when prompted, and it will copy into app storage.
+- Open the app, select the model when prompted, and it will copy into app storage at `filesDir/models/model.gguf`.
 - After import, the app works fully offline.
 
 ## Engine selection
 - `EngineProvider` checks for a real model asset and whether the JNI library loads.
 - If both are available, it uses `LlamaEngine`.
 - Otherwise it falls back to `SimpleLocalEngine` and tells the user: `Offline model not installed. Using local fallback engine.`
+
+## Runtime notes
+- `LLM: Ready` means llama.cpp is loaded and real inference is enabled.
+- Example prompt: `Привіт, напиши HTML з кнопками` should return actual HTML output offline.
 
 ## Notes
 - No internet APIs are used.

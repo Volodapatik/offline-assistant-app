@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.volodapatik.offlineassistant.engine.AssistantEngine
 import com.volodapatik.offlineassistant.engine.EngineProvider
 import com.volodapatik.offlineassistant.engine.LlamaEngine
+import com.volodapatik.offlineassistant.engine.LlamaNative
 import com.volodapatik.offlineassistant.engine.SimpleLocalEngine
 import com.volodapatik.offlineassistant.model.ChatMessage
 import com.volodapatik.offlineassistant.model.Role
@@ -229,7 +230,10 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        output.fd.sync()
+                        try {
+                            output.fd.sync()
+                        } catch (_: Exception) {
+                        }
                     }
                 }
                 moveTempIntoPlace(tempFile, targetFile)
@@ -285,6 +289,9 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 if (tempFile.exists()) {
                     tempFile.delete()
+                }
+                if (targetFile.exists()) {
+                    targetFile.delete()
                 }
                 runOnUiThread {
                     modelProgress.isVisible = false
